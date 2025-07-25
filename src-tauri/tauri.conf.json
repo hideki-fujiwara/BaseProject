@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "d4metamanager",
+  "productName": "baseproject",
   "version": "0.1.0",
-  "identifier": "com.d4metamanager.app",
+  "identifier": "com.baseproject.app",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,8 @@
   "app": {
     "windows": [
       {
-        "title": "D4MetaManager",
+        "title": "baseproject",
+        "dragDropEnabled": false,
         "decorations": false,
         "resizable": true,
         "transparent": false

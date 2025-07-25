@@ -33,13 +33,13 @@ pub fn run() {
                     Target::new(TargetKind::Stdout),  // 標準出力
                     Target::new(TargetKind::Webview), // Webview
                     Target::new(TargetKind::Folder {
-                        // ファイル出力(config_dir/D4MetaManager)
+                        // ファイル出力(config_dir/baseproject)
                         path: std::path::PathBuf::from(
                             dirs::config_dir()
                                 .expect("Failed to get config dir")
-                                .join("D4MetaManager"),
+                                .join("baseproject"),
                         ),
-                        file_name: Some("D4MetaManager".to_string()),
+                        file_name: Some("baseproject".to_string()),
                     }),
                 ])
                 .max_file_size(4_000_000) // ログファイルの最大サイズ（MB）
@@ -64,11 +64,11 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![greet])
         // アプリケーションの初期設定
         .setup(|app| {
-            info!("D4MetaManager プログラムスタート");
+            info!("baseproject プログラムスタート");
 
             // 設定ディレクトリの取得
             let config_dir = match dirs::config_dir() {
-                Some(dir) => dir.join("D4MetaManager"),
+                Some(dir) => dir.join("baseproject"),
                 None => {
                     error!("設定ディレクトリの取得に失敗しました");
                     return Ok(());

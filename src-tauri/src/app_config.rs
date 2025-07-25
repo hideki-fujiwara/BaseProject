@@ -95,7 +95,7 @@ impl AppConfig {
             projects: vec![],
             window_state: WindowState::default(),
             window_config: WindowConfig {
-                title: String::from("D4MetaManager 2025"),
+                title: String::from("baseproject 2025"),
                 min_width: 1024,
                 min_height: 768,
                 max_width: 7680,
@@ -118,7 +118,7 @@ impl AppConfig {
 /// - ファイル読み込みエラー時はデフォルト設定を使用
 /// - JSON解析エラー時はデフォルト設定を使用
 pub fn get_app_config(config_dir: &str) -> AppConfig {
-    let config_file = Path::new(config_dir).join("D4MetaManager.config");
+    let config_file = Path::new(config_dir).join("baseproject.config");
     debug!("config_file: {:?}", config_file); // ここでデバッグ
     // 設定ファイルが存在しない場合はデフォルト設定を返す
     if !config_file.exists() {

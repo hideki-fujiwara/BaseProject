@@ -30,7 +30,7 @@ const DEFAULT_CONFIG = {
     fullscreen: false,
   },
   window_config: {
-    title: "D4MetaManager 2025",
+    title: "baseproject 2025",
     min_width: 1024,
     min_height: 768,
     max_width: 7680,
@@ -40,7 +40,7 @@ const DEFAULT_CONFIG = {
 
 // 設定ファイルのパス
 let CONFIG_DIR = "";
-const CONFIG_FILE = "D4MetaManager.config";
+const CONFIG_FILE = "baseproject.config";
 
 /**
  * 設定ファイルを読み込む
@@ -67,7 +67,7 @@ export async function loadConfig() {
   ConsoleMsg("info", `HOMEフォルダ::homeDirPath=${homeDirPath}`);
 
   try {
-    CONFIG_DIR = `${configDirPath}\\D4MetaManager`;
+    CONFIG_DIR = `${configDirPath}\\baseproject`;
     // 設定ディレクトリが存在するか確認し、なければ作成
     ConsoleMsg("debug", `Config設定ディレクトリ: ${CONFIG_DIR}`);
     const dirExists = await exists(CONFIG_DIR, { dir: BaseDirectory.Config });

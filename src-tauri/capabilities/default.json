@@ -25,15 +25,15 @@
     "fs:allow-write-text-file",
     {
       "identifier": "fs:allow-exists",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/D4MetaManager/*" }]
+      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/baseproject/*" }]
     },
     {
       "identifier": "fs:allow-write-text-file",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/D4MetaManager/*" }]
+      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/baseproject/*" }]
     },
     {
       "identifier": "fs:allow-read-text-file",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/D4MetaManager/*" }]
+      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/baseproject/*" }]
     }
   ]
 }

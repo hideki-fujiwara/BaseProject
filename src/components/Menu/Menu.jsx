@@ -119,7 +119,7 @@ function AppMenu() {
             aria-hidden="true"
           />
           <span className="ml-2 text-lg font-bold text-base-content">
-            D4MetaManager
+            baseproject
           </span>
         </div>
 
