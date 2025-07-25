@@ -11,6 +11,8 @@
     "core:window:allow-close",
     "core:window:allow-minimize",
     "core:window:allow-toggle-maximize",
+    "core:window:allow-unminimize",
+    "core:window:allow-unmaximize",
     "core:window:allow-start-dragging",
     "core:window:allow-center",
     "dialog:default",
@@ -23,17 +25,19 @@
     "fs:allow-config-read-recursive",
     "fs:allow-read-text-file",
     "fs:allow-write-text-file",
+    "store:allow-load",
+    "store:default",
     {
       "identifier": "fs:allow-exists",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/D4MetaManager/*" }]
+      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/BaseProject/*" }]
     },
     {
       "identifier": "fs:allow-write-text-file",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/D4MetaManager/*" }]
+      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/BaseProject/*" }]
     },
     {
       "identifier": "fs:allow-read-text-file",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/D4MetaManager/*" }]
+      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/BaseProject/*" }]
     }
   ]
 }

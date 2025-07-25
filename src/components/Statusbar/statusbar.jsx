@@ -1,5 +1,5 @@
-import ConsoleMsg from '../../utils/ConsoleMsg';
-import { useState, useEffect } from 'react';
+import ConsoleMsg from "../../utils/ConsoleMsg";
+import { useState, useEffect } from "react";
 
 function Statusbar() {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -12,20 +12,20 @@ function Statusbar() {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = date => {
-    return date.toLocaleString('ja-JP', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
+  const formatTime = (date) => {
+    return date.toLocaleString("ja-JP", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
       hour12: false,
     });
   };
 
-  const formatDate = date => {
-    return date.toLocaleString('ja-JP', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
+  const formatDate = (date) => {
+    return date.toLocaleString("ja-JP", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     });
   };
 
