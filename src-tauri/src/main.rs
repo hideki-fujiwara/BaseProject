@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-  BaseProject_lib::run()
+  base_project_lib::run()
 }

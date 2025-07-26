@@ -1,30 +1,30 @@
-import { useRef, useState, useEffect } from 'react';
-import { getCurrentWindow } from '@tauri-apps/api/window';
-import { Button } from 'react-aria-components';
-
-import ConsoleMsg from '../../utils/ConsoleMsg';
-import Menu from '../Menu/Menu';
+import { useRef, useState, useEffect } from "react";
+import { Button } from "react-aria-components";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import ConsoleMsg from "../../utils/ConsoleMsg";
+import Menu from "../Menu/Menu";
+import { saveWindowStateAndExit } from "../../utils/windowManager";
 
 // ウィンドウを最小化する関数
 function window_minimize() {
   // ウィンドウ最小化前のデバッグメッセージを表示
-  ConsoleMsg('debug', 'window minimize');
+  ConsoleMsg("debug", "window minimize");
   // Tauri API を使用してウィンドウを最小化
   getCurrentWindow().minimize();
 }
 // ウィンドウを最大化または元に戻す(トグル)する関数
 function window_maximize() {
   // ウィンドウ最大化処理の開始前にデバッグメッセージを表示
-  ConsoleMsg('debug', 'window maximize');
+  ConsoleMsg("debug", "window maximize");
   // Tauri API を使用してウィンドウの最大化/元に戻す処理をトグル
   getCurrentWindow().toggleMaximize();
 }
 // ウィンドウを閉じる関数
 function window_close() {
   // ウィンドウを閉じる前にデバッグメッセージを表示
-  ConsoleMsg('debug', 'window close');
-  // Tauri API を使用してウィンドウを閉じる
-  getCurrentWindow().close();
+  ConsoleMsg("debug", "window close");
+  // ウィンドウ状態を保存して終了する関数を呼び出す
+  saveWindowStateAndExit();
 }
 
 function WindowsTitlebar() {

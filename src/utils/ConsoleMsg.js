@@ -8,11 +8,7 @@ import { warn, debug, trace, info, error } from "@tauri-apps/plugin-log";
  */
 function ConsoleMsg(level, message, ...args) {
   // メッセージと追加引数をまとめて文字列化
-  const fullMessage = [message, ...args]
-    .map((arg) =>
-      typeof arg === "object" ? JSON.stringify(arg, null, 2) : String(arg)
-    )
-    .join(" ");
+  const fullMessage = [message, ...args].map((arg) => (typeof arg === "object" ? JSON.stringify(arg, null, 2) : String(arg))).join(" ");
 
   // ログレベルに応じて出力先を切り替え
   switch (level) {

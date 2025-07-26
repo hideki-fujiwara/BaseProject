@@ -5,10 +5,10 @@
 
 use std::path::PathBuf;
 
-use log::{error, info};
+use log::{info};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle};
 use tauri_plugin_store::StoreExt;
 
 /// プロジェクト情報（単一エントリ）

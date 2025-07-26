@@ -192,8 +192,14 @@ pub fn run() {
         }
 
         // フルスクリーン設定（前回終了時の状態を復元）
-        if let Err(e) = main_window.set_fullscreen(window_state.fullscreen) {
-          error!("フルスクリーン設定の適用に失敗しました: {}", e);
+        if window_state.fullscreen {
+          if let Err(e) = main_window.maximize() {
+            error!("フルスクリーン設定の適用に失敗しました: {}", e);
+          }
+        } else {
+          if let Err(e) = main_window.unmaximize() {
+            error!("フルスクリーン解除の適用に失敗しました: {}", e);
+          }
         }
 
         // テーマ設定（Light/Dark/自動検出）
