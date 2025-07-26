@@ -79,7 +79,7 @@ impl Default for Config {
         },
       },
       window_config: WindowConfig {
-        title: String::from("baseproject 2025"),
+        title: String::from("BaseProject 2025"),
         min_width: 1024,
         min_height: 768,
         max_width: 7680,

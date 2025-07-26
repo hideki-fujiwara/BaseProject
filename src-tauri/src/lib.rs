@@ -66,13 +66,13 @@ pub fn run() {
           Target::new(TargetKind::Stdout),  // 標準出力（コンソール）
           Target::new(TargetKind::Webview), // Webview（ブラウザコンソール）
           Target::new(TargetKind::Folder {  // ファイル出力
-            // ログファイル保存先: ユーザー設定ディレクトリ/baseproject/
+            // ログファイル保存先: ユーザー設定ディレクトリ/BaseProject/
             path: std::path::PathBuf::from(
               dirs_2::config_dir()
                 .expect("Failed to get config dir") // 設定ディレクトリ取得失敗時はパニック
-                .join("baseproject") // アプリ専用サブディレクトリ
+                .join("BaseProject") // アプリ専用サブディレクトリ
             ),
-            file_name: Some("baseproject".to_string()), // ログファイル名
+            file_name: Some("BaseProject".to_string()), // ログファイル名
           }),
         ])
         .max_file_size(4_000_000)                     // ログファイル最大サイズ: 4MB
@@ -107,13 +107,13 @@ pub fn run() {
     // アプリケーション初期化処理
     // ========================================================================================
     .setup(|app| {
-      info!("baseproject プログラムスタート");
+      info!("BaseProject プログラムスタート");
 
       // ----------------------------------------------------------------------------------------
       // 設定ディレクトリの取得・準備
       // ----------------------------------------------------------------------------------------
       let config_dir = match dirs_2::config_dir() {
-        Some(dir) => dir.join("baseproject"), // %APPDATA%/baseproject (Windows)
+        Some(dir) => dir.join("BaseProject"), // %APPDATA%/BaseProject (Windows)
         None => {
           error!("設定ディレクトリの取得に失敗しました");
           return Ok(()); // エラーでも続行（機能制限モード）

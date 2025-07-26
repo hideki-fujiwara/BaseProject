@@ -32,7 +32,7 @@
           "path": "$CONFIG/*"
         },
         {
-          "path": "$CONFIG/baseproject/*"
+          "path": "$CONFIG/BaseProject/*"
         }
       ]
     },
@@ -43,7 +43,7 @@
           "path": "$CONFIG/*"
         },
         {
-          "path": "$CONFIG/baseproject/*"
+          "path": "$CONFIG/BaseProject/*"
         }
       ]
     },
@@ -54,7 +54,7 @@
           "path": "$CONFIG/*"
         },
         {
-          "path": "$CONFIG/baseproject/*"
+          "path": "$CONFIG/BaseProject/*"
         }
       ]
     },

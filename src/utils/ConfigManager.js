@@ -30,7 +30,7 @@ const DEFAULT_CONFIG = {
     fullscreen: false,
   },
   window_config: {
-    title: "baseproject 2025",
+    title: "BaseProject 2025",
     min_width: 1024,
     min_height: 768,
     max_width: 7680,
@@ -40,7 +40,7 @@ const DEFAULT_CONFIG = {
 
 // 設定ファイルのパス
 let CONFIG_DIR = "";
-const CONFIG_FILE = "baseproject.config";
+const CONFIG_FILE = "BaseProject.config";
 
 /**
  * 設定ファイルを読み込む
@@ -58,16 +58,13 @@ export async function loadConfig() {
   ConsoleMsg("info", `ディスクトップフォルダ::desktopPath=${desktopPath}`);
   //
   const documentDirPath = await documentDir();
-  ConsoleMsg(
-    "info",
-    `ドキュメントフォルダ::documentDirPath=${documentDirPath}`
-  );
+  ConsoleMsg("info", `ドキュメントフォルダ::documentDirPath=${documentDirPath}`);
   //
   const homeDirPath = await homeDir();
   ConsoleMsg("info", `HOMEフォルダ::homeDirPath=${homeDirPath}`);
 
   try {
-    CONFIG_DIR = `${configDirPath}\\baseproject`;
+    CONFIG_DIR = `${configDirPath}\\BaseProject`;
     // 設定ディレクトリが存在するか確認し、なければ作成
     ConsoleMsg("debug", `Config設定ディレクトリ: ${CONFIG_DIR}`);
     const dirExists = await exists(CONFIG_DIR, { dir: BaseDirectory.Config });
@@ -92,19 +89,13 @@ export async function loadConfig() {
       return { ...DEFAULT_CONFIG, ...JSON.parse(configData) };
     } else {
       // 設定ファイルが存在しない場合はデフォルト設定を保存して返す
-      ConsoleMsg(
-        "info",
-        `設定ファイルが見つかりません。デフォルト設定を作成します: ${configPath}`
-      );
+      ConsoleMsg("info", `設定ファイルが見つかりません。デフォルト設定を作成します: ${configPath}`);
       await saveConfig(DEFAULT_CONFIG);
       return DEFAULT_CONFIG;
     }
   } catch (error) {
     // エラーが発生した場合はログを出力してデフォルト設定を返す
-    ConsoleMsg(
-      "error",
-      `設定ファイルの読み込み中にエラーが発生しました: ${error}`
-    );
+    ConsoleMsg("error", `設定ファイルの読み込み中にエラーが発生しました: ${error}`);
     return DEFAULT_CONFIG;
   }
 }

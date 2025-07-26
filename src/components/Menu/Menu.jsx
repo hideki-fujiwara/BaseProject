@@ -107,62 +107,35 @@ function AppMenu() {
 
   return (
     <>
-      <div
-        className="ml-2 flex place-items-center gap-2 pl-2"
-        role="menubar"
-        aria-label="メインメニュー"
-      >
+      <div className="ml-2 flex place-items-center gap-2 pl-2" role="menubar" aria-label="メインメニュー">
         {/* アプリアイコンとタイトル */}
         <div className="flex items-center gap-2">
-          <span
-            className="i-mdi-database-cog h-10 w-10 text-base-content"
-            aria-hidden="true"
-          />
-          <span className="ml-2 text-lg font-bold text-base-content">
-            baseproject
-          </span>
+          <span className="i-mdi-database-cog h-10 w-10 text-base-content" aria-hidden="true" />
+          <span className="ml-2 text-lg font-bold text-base-content">BaseProject</span>
         </div>
 
         {/* ファイルメニュー */}
         <div className="ml-4">
           <MenuTrigger>
-            <Button className="h-10 w-20 text-base-content hover:bg-base-300">
-              ファイル(F)
-            </Button>
+            <Button className="h-10 w-20 text-base-content hover:bg-base-300">ファイル(F)</Button>
             <Popover>
-              <Menu className="w-60 rounded-box bg-base-200 p-2 shadow-lg">
-                {menuItems.file.map((item) =>
-                  renderMenuItem(item, handleMenuSelect)
-                )}
-              </Menu>
+              <Menu className="w-60 rounded-box bg-base-200 p-2 shadow-lg">{menuItems.file.map((item) => renderMenuItem(item, handleMenuSelect))}</Menu>
             </Popover>
           </MenuTrigger>
 
           {/* 編集メニュー */}
           <MenuTrigger>
-            <Button className="h-10 w-20 text-base-content hover:bg-base-300">
-              編集(E)
-            </Button>
+            <Button className="h-10 w-20 text-base-content hover:bg-base-300">編集(E)</Button>
             <Popover>
-              <Menu className="w-60 rounded-box bg-base-200 p-2 shadow">
-                {menuItems.edit.map((item) =>
-                  renderMenuItem(item, handleMenuSelect)
-                )}
-              </Menu>
+              <Menu className="w-60 rounded-box bg-base-200 p-2 shadow">{menuItems.edit.map((item) => renderMenuItem(item, handleMenuSelect))}</Menu>
             </Popover>
           </MenuTrigger>
 
           {/* ヘルプメニュー */}
           <MenuTrigger>
-            <Button className="h-10 w-20 text-base-content hover:bg-base-300">
-              ヘルプ(H)
-            </Button>
+            <Button className="h-10 w-20 text-base-content hover:bg-base-300">ヘルプ(H)</Button>
             <Popover>
-              <Menu className="w-60 rounded-box bg-base-200 p-2 shadow">
-                {menuItems.help.map((item) =>
-                  renderMenuItem(item, handleMenuSelect)
-                )}
-              </Menu>
+              <Menu className="w-60 rounded-box bg-base-200 p-2 shadow">{menuItems.help.map((item) => renderMenuItem(item, handleMenuSelect))}</Menu>
             </Popover>
           </MenuTrigger>
         </div>
