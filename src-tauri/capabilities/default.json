@@ -2,7 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "opener:default",
@@ -25,15 +27,37 @@
     "fs:allow-write-text-file",
     {
       "identifier": "fs:allow-exists",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/baseproject/*" }]
+      "allow": [
+        {
+          "path": "$CONFIG/*"
+        },
+        {
+          "path": "$CONFIG/baseproject/*"
+        }
+      ]
     },
     {
       "identifier": "fs:allow-write-text-file",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/baseproject/*" }]
+      "allow": [
+        {
+          "path": "$CONFIG/*"
+        },
+        {
+          "path": "$CONFIG/baseproject/*"
+        }
+      ]
     },
     {
       "identifier": "fs:allow-read-text-file",
-      "allow": [{ "path": "$CONFIG/*" }, { "path": "$CONFIG/baseproject/*" }]
-    }
+      "allow": [
+        {
+          "path": "$CONFIG/*"
+        },
+        {
+          "path": "$CONFIG/baseproject/*"
+        }
+      ]
+    },
+    "store:default"
   ]
 }
