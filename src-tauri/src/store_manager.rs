@@ -94,62 +94,43 @@ impl Default for Config {
 pub fn initialize_store(app: &AppHandle, config_dir: &PathBuf) -> Result<(), Box<dyn std::error::Error>> {
   // 設定ディレクトリを生成（既に存在していても OK）
   std::fs::create_dir_all(config_dir)?;
-  // // 設定ファイルのフルパスを構築
+  
+  // 設定ファイルのフルパスを構築
   let path = config_dir.join("BaseProject.config");
   info!("設定ファイルのパス: {}", path.display());
+  
   // Tauri のストアハンドルを取得
   let store = app.store(path.to_string_lossy().as_ref())?;
-  // let store = app.store("BaseProject.config")?;
+
+  // デフォルト設定を取得
+  let default_config = Config::default();
 
   // ── project_config の初期化 ─────────────────────────
-  // キー "project_config" が存在しない場合、デフォルトの空エントリを設定
+  // キー "project_config" が存在しない場合、デフォルト値を設定
   if !store.has("project_config") {
     store.set(
       "project_config",
-      json!(ProjectConfig {
-        name: "".into(),
-        filepath: "".into(),
-        remarks: "".into(),
-      }),
+      json!(default_config.projects),
     );
     info!("project_config をデフォルト初期化");
   }
 
   // ── window_config の初期化 ──────────────────────────
-  // キー "window_config"
-  // が存在しない場合、起動時のウィンドウ設定をデフォルト値で設定
+  // キー "window_config" が存在しない場合、デフォルト値を設定
   if !store.has("window_config") {
     store.set(
       "window_config",
-      json!(WindowConfig {
-        title: "BaseProject".into(), // ウィンドウタイトル
-        min_width: 800,              // 最小幅
-        min_height: 600,             // 最小高さ
-        max_width: 1920,             // 最大幅
-        max_height: 1080,            // 最大高さ
-      }),
+      json!(default_config.window_config),
     );
     info!("window_config をデフォルト初期化");
   }
 
   // ── window_state の初期化 ──────────────────────────
-  // キー "window_state"
-  // が存在しない場合、最後のウィンドウ状態をデフォルト値で設定
+  // キー "window_state" が存在しない場合、デフォルト値を設定
   if !store.has("window_state") {
     store.set(
       "window_state",
-      json!({
-        "width": 1200,          // 幅
-        "height": 800,          // 高さ
-        "x": 100,               // X 座標
-        "y": 100,               // Y 座標
-        "fullscreen": false,    // フルスクリーン状態
-        "theme": "auto",        // テーマ自動選択
-        "main_panel_layout": {
-          "horizontal": [15, 70, 15],
-          "vertical": [85, 15]
-        } // メインパネルのレイアウト
-      }),
+      json!(default_config.window_state),
     );
     info!("window_state をデフォルト初期化");
   }
