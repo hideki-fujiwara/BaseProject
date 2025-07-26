@@ -1,0 +1,23 @@
+# 基本設定
+max_width = 200
+hard_tabs = false
+tab_spaces = 2
+
+# インポート設定
+imports_layout = "HorizontalVertical"
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
+
+# コメント設定
+comment_width = 80
+wrap_comments = true
+normalize_comments = true
+
+# 関数とクロージャ
+fn_args_layout = "Tall"
+brace_style = "SameLineWhere"
+
+# その他
+trailing_semicolon = true
+trailing_comma = "Vertical"
+match_block_trailing_comma = true
