@@ -2,10 +2,9 @@
 // 必要なクレートをインポート
 use chrono::Local; // 日時処理用
 use dirs_2::{self as dirs}; // ディレクトリパス取得用
-use log::{error, info,  LevelFilter}; // ロギング機能
-use tauri::{Manager};
-use tauri_plugin_log::{Target, TargetKind};
-use store_manager::{StoreManager, WindowConfig, WindowState};
+use log::{error, info, LevelFilter}; // ロギング機能
+use tauri::Manager;
+use tauri_plugin_log::{Target, TargetKind}; // Tauriログプラグイン // Tauriウィンドウ管理
 
 // アプリケーション設定モジュール
 // mod app_config;
@@ -21,32 +20,32 @@ fn greet(name: &str) -> String {
 /// モバイル対応のための属性を設定
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-  #[cfg(debug_assertions)]
   // Tauriアプリケーションの構築開始
   tauri::Builder::default()
-    // ダイアログプラグイン: フロントエンドからダイアログ表示を呼び出せるようにする
+    .plugin(tauri_plugin_log::Builder::new().build())
+    // ダイアログ機能の初期化
     .plugin(tauri_plugin_dialog::init())
-    // ログプラグイン: 標準出力／Webview／ファイルへのログ出力を設定
+    // ログ機能の設定
     .plugin(
       tauri_plugin_log::Builder::new()
+        // ログの出力先を設定
         .targets([
-          Target::new(TargetKind::Stdout),  // コンソール出力
-          Target::new(TargetKind::Webview), // Webview の JS コンソール出力
-          Target::new(TargetKind::Folder {  // 設定ディレクトリ以下にログファイル出力
-            path: std::path::PathBuf::from(
-              dirs::config_dir().expect("Failed to get config dir")
-                .join("BaseProject"),
-            ),
-            file_name: Some("BaseProject".to_string()),
+          Target::new(TargetKind::Stdout),  // 標準出力
+          Target::new(TargetKind::Webview), // Webview
+          Target::new(TargetKind::Folder {
+            // ファイル出力(config_dir/baseproject)
+            path: std::path::PathBuf::from(dirs::config_dir().expect("Failed to get config dir").join("baseproject")),
+            file_name: Some("baseproject".to_string()),
           }),
         ])
-        .max_file_size(4_000_000)                     // 4MB 超えたらローテート
-        .level(LevelFilter::Debug)                    // デバッグ以上のログを記録
-        .timezone_strategy(tauri_plugin_log::TimezoneStrategy::UseLocal) // ローカルタイム
-        .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepAll)  // 全世代保持
-        .format(|out, message, record| {               // ログフォーマットを指定
+        .max_file_size(4_000_000) // ログファイルの最大サイズ（MB）
+        .level(LevelFilter::Debug) // ログレベルの設定
+        .timezone_strategy(tauri_plugin_log::TimezoneStrategy::UseLocal) // タイムゾーン設定
+        .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepAll) // ログローテーション設定
+        // ログフォーマットの設定
+        .format(|out, message, record| {
           out.finish(format_args!(
-            "[{}]:[{}]: {}",                           // [日時]:[レベル]: メッセージ
+            "[{}]:[{}]: {}", // [日時]:[ログレベル]: メッセージ
             Local::now().format("%Y-%m-%d %H:%M:%S"),
             record.level(),
             message
@@ -54,82 +53,91 @@ pub fn run() {
         })
         .build(),
     )
-    // ファイルオープンプラグイン: デスクトップのファイル選択ダイアログや外部アプリ起動をサポート
-    .plugin(tauri_plugin_opener::init())
-    // ファイルシステムプラグイン: フォルダやファイルの読み書きを Rust 側で呼び出し可能に
-    .plugin(tauri_plugin_fs::init())
-    // ストアプラグイン: キー・バリューストアを簡単に永続化できるようにする
-    .plugin(tauri_plugin_store::Builder::new().build())
-    // コマンドハンドラー: Rust のコマンドを JavaScript から呼び出す設定
+    // 追加プラグインの設定
+    .plugin(tauri_plugin_opener::init()) // ファイルオープン機能
+    .plugin(tauri_plugin_fs::init()) // ファイルシステム操作
+    // コマンドハンドラーの登録
     .invoke_handler(tauri::generate_handler![greet])
-    // アプリ起動時のセットアップ処理
+    // アプリケーションの初期設定
     .setup(|app| {
-      info!("BaseProject .setup Start");
-      // 設定ディレクトリを取得または生成
+      info!("baseproject プログラムスタート");
+
+      // 設定ディレクトリの取得
       let config_dir = match dirs::config_dir() {
-        Some(dir) => dir.join("BaseProject"),
+        Some(dir) => dir.join("baseproject"),
+        #[allow(non_snake_case)]
         None => {
           error!("設定ディレクトリの取得に失敗しました");
           return Ok(());
         },
       };
-      // ストアの初期化（キーのデフォルト設定など）
-      if let Err(e) = StoreManager::initialize_store(&app.handle(), &config_dir) {
-        error!("ストアの初期化に失敗しました: {}", e);
-      }
-      // ウィンドウ設定・状態をロード
-      let window_cfg: WindowConfig =
-        StoreManager::load_window_config(&app.handle(), &config_dir)?;
-      let window_state: WindowState =
-        StoreManager::load_window_state(&app.handle(), &config_dir)?;
-      // ウィンドウに設定を適用
-      let title   = &window_cfg.title;
-      let min_w   = window_cfg.min_width;
-      let min_h   = window_cfg.min_height;
-      let max_w   = window_cfg.max_width;
-      let max_h   = window_cfg.max_height;
-      let width   = window_state.width;
-      let height  = window_state.height;
-      let x       = window_state.x;
-      let y       = window_state.y;
-      let fullscreen = window_state.fullscreen;
-      // テーマ設定: dark/light は固定、それ以外は OS デフォルト
-      let theme = match window_state.theme.as_str() {
-        "dark"  => Some(tauri::Theme::Dark),
-        "light" => Some(tauri::Theme::Light),
-        _       => None,
-      };
+
+      // アプリケーション設定の読み込み
+      let config = app_config::get_app_config(config_dir.to_str().unwrap());
+
+      // メインウィンドウの設定
       if let Some(main_window) = app.get_webview_window("main") {
-        // 各種ウィンドウプロパティを設定
-        main_window.set_title(title)
-          .unwrap_or_else(|e| error!("タイトル設定失敗: {}", e));
-        main_window.set_min_size(Some(tauri::Size::Physical(
-          tauri::PhysicalSize { width: min_w, height: min_h },
-        ))).unwrap_or_else(|e| error!("最小サイズ設定失敗: {}", e));
-        main_window.set_max_size(Some(tauri::Size::Physical(
-          tauri::PhysicalSize { width: max_w, height: max_h },
-        ))).unwrap_or_else(|e| error!("最大サイズ設定失敗: {}", e));
-        main_window.set_size(tauri::Size::Physical(
-          tauri::PhysicalSize { width, height },
-        )).unwrap_or_else(|e| error!("サイズ設定失敗: {}", e));
-        main_window.set_position(tauri::Position::Physical(
-          tauri::PhysicalPosition { x, y },
-        )).unwrap_or_else(|e| error!("位置設定失敗: {}", e));
-        // フルスクリーンの場合は少し遅延して最大化
-        if fullscreen {
-          let w = main_window.clone();
-          std::thread::spawn(move || {
-            std::thread::sleep(std::time::Duration::from_millis(400));
-            w.maximize().unwrap_or_else(|e| error!("最大化失敗: {}", e));
-          });
+        // ウィンドウの基本設定を適用
+
+        if let Err(e) = main_window.set_title(&config.window_config.title) {
+          error!("タイトルの設定に失敗しました: {}", e);
         }
-        // テーマ設定（None の場合は OS デフォルトを適用）
-        main_window.set_theme(theme)
-          .unwrap_or_else(|e| error!("テーマ設定失敗: {}", e));
+
+        // サイズ制限の設定
+        if let Err(e) = main_window.set_min_size(Some(tauri::Size::Physical(tauri::PhysicalSize {
+          width: config.window_config.min_width,
+          height: config.window_config.min_height,
+        }))) {
+          error!("最小サイズの設定に失敗しました: {}", e);
+        }
+
+        if let Err(e) = main_window.set_max_size(Some(tauri::Size::Physical(tauri::PhysicalSize {
+          width: config.window_config.max_width,
+          height: config.window_config.max_height,
+        }))) {
+          error!("最大サイズの設定に失敗しました: {}", e);
+        }
+
+        // ウィンドウサイズと位置を設定
+        if let Err(e) = main_window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
+          width: config.window_state.width as u32,
+          height: config.window_state.height as u32,
+        })) {
+          error!("ウィンドウサイズの設定に失敗しました: {}", e);
+        }
+
+        if let Err(e) = main_window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
+          x: config.window_state.x,
+          y: config.window_state.y,
+        })) {
+          error!("ウィンドウ位置の設定に失敗しました: {}", e);
+        }
+
+        // フルスクリーン設定を適用
+        if let Err(e) = main_window.set_fullscreen(config.window_state.fullscreen) {
+          error!("フルスクリーン設定の適用に失敗しました: {}", e);
+        }
+
+        // テーマを適用（カスタムイベントとして送信）
+        let theme = match config.window_state.theme.as_str() {
+          "Light" => Some(tauri::Theme::Light),
+          "Dark" => Some(tauri::Theme::Dark),
+          "auto" => match dark_light::detect() {
+            Ok(dark_light::Mode::Dark) => Some(tauri::Theme::Dark),
+            Ok(dark_light::Mode::Light) => Some(tauri::Theme::Light),
+            _ => None, // 2.0ではUnknownは存在しないが、網羅性のため
+          },
+          _ => None,
+        };
+
+        if let Err(e) = main_window.set_theme(theme) {
+          error!("テーマ設定の適用に失敗しました: {}", e);
+        }
       }
+
       Ok(())
     })
-    // Tauri アプリケーションの実行開始
+    // アプリケーションの実行
     .run(tauri::generate_context!())
     .expect("error while running tauri application"); // 実行中にエラーが発生した場合のメッセージ
 }

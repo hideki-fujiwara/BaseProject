@@ -19,7 +19,5 @@
   "useTabs": false,
   "embeddedLanguageFormatting": "auto",
   "vueIndentScriptAndStyle": false,
-  "experimentalTernaries": false,
-  "filepath": "d:\\Project\\tauri\\BaseProject\\src\\utils\\ConfigManager.js",
-  "parser": "babel"
+  "experimentalTernaries": false
 }
