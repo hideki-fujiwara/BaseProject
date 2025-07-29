@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu, MenuItem, MenuTrigger, Button, Popover, SubmenuTrigger, Separator } from "react-aria-components";
-
+import ConsoleMsg from "../../utils/ConsoleMsg";
 // メニュー項目の定義
 const menuItems = {
   file: [
@@ -62,17 +62,21 @@ function renderMenuItem(item, onSelect) {
     // サブメニューの処理
     return (
       <SubmenuTrigger key={item.id}>
-        <MenuItem>{item.name}</MenuItem>
+        <MenuItem className="flex w-full cursor-pointer items-center justify-between rounded px-4 py-2 text-sm text-base-content hover:bg-base-300">
+          <span>{item.name}</span>
+          <span className="text-xs text-base-content/60">＞</span>
+        </MenuItem>
         <Popover>
-          <Menu>{item.children.map((child) => renderMenuItem(child, onSelect))}</Menu>
+          <Menu className="w-60 rounded-box bg-base-200 p-2 shadow-lg">{item.children.map((child) => renderMenuItem(child, onSelect))}</Menu>
         </Popover>
       </SubmenuTrigger>
     );
   }
 
   return (
-    <MenuItem key={item.id} onPress={() => onSelect(item.id)} className="flex w-full cursor-pointer items-center rounded px-4 py-2 text-sm text-base-content hover:bg-base-300">
-      {item.name}
+    <MenuItem key={item.id} onPress={() => onSelect(item.id)} className="flex w-full cursor-pointer items-center justify-between rounded px-4 py-2 text-sm text-base-content hover:bg-base-300">
+      <span>{item.name}</span>
+      {item.shortcut && <span className="ml-4 text-xs text-base-content/60">{item.shortcut}</span>}
     </MenuItem>
   );
 }
@@ -131,7 +135,7 @@ function AppMenu() {
               <Menu className="w-60 rounded-box bg-base-200 p-2 shadow">{menuItems.edit.map((item) => renderMenuItem(item, handleMenuSelect))}</Menu>
             </Popover>
           </MenuTrigger>
-          {/* 編集メニュー */}
+          {/* 表示メニュー */}
           <MenuTrigger>
             <Button className="h-10 w-20 text-base-content hover:bg-base-300">表示(V)</Button>
             <Popover>
