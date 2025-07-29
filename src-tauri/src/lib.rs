@@ -21,10 +21,10 @@ mod store_manager;
 // ========================================================================================
 /// 基本的な挨拶機能を提供するコマンド（開発テスト用）
 /// フロントエンド（JavaScript）から呼び出し可能なRust関数
-/// 
+///
 /// # 引数
 /// * `name` - 挨拶する相手の名前
-/// 
+///
 /// # 戻り値
 /// * 挨拶メッセージ文字列
 #[tauri::command]
@@ -37,7 +37,7 @@ fn greet(name: &str) -> String {
 // ========================================================================================
 /// アプリケーションのメインエントリーポイント
 /// モバイル対応のための属性を設定
-/// 
+///
 /// この関数では以下の処理を行う：
 /// 1. 各種プラグインの初期化
 /// 2. ログ機能の設定
@@ -47,17 +47,13 @@ fn greet(name: &str) -> String {
 pub fn run() {
   // Tauriアプリケーションの構築開始
   tauri::Builder::default()
-    
     // ========================================================================================
     // プラグイン初期化
     // ========================================================================================
-    
     // ストアプラグイン: キー・バリューストア機能（設定の永続化）
     .plugin(tauri_plugin_store::Builder::new().build())
-    
     // ダイアログプラグイン: ファイル選択ダイアログなどのネイティブUI
     .plugin(tauri_plugin_dialog::init())
-    
     // ログプラグイン: 複数出力先への統合ログ機能
     .plugin(
       tauri_plugin_log::Builder::new()
@@ -65,20 +61,21 @@ pub fn run() {
         .targets([
           Target::new(TargetKind::Stdout),  // 標準出力（コンソール）
           Target::new(TargetKind::Webview), // Webview（ブラウザコンソール）
-          Target::new(TargetKind::Folder {  // ファイル出力
+          Target::new(TargetKind::Folder {
+            // ファイル出力
             // ログファイル保存先: ユーザー設定ディレクトリ/BaseProject/
             path: std::path::PathBuf::from(
               dirs_2::config_dir()
                 .expect("Failed to get config dir") // 設定ディレクトリ取得失敗時はパニック
-                .join("BaseProject") // アプリ専用サブディレクトリ
+                .join("BaseProject"), // アプリ専用サブディレクトリ
             ),
             file_name: Some("BaseProject".to_string()), // ログファイル名
           }),
         ])
-        .max_file_size(4_000_000)                     // ログファイル最大サイズ: 4MB
-        .level(LevelFilter::Debug)                    // ログレベル: Debug以上を記録
+        .max_file_size(4_000_000) // ログファイル最大サイズ: 4MB
+        .level(LevelFilter::Debug) // ログレベル: Debug以上を記録
         .timezone_strategy(tauri_plugin_log::TimezoneStrategy::UseLocal) // ローカルタイムゾーン使用
-        .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepAll)  // 全世代のログファイル保持
+        .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepAll) // 全世代のログファイル保持
         // ログフォーマット: [日時]:[レベル]: メッセージ
         .format(|out, message, record| {
           out.finish(format_args!(
@@ -90,19 +87,15 @@ pub fn run() {
         })
         .build(),
     )
-    
     // ファイルオープンプラグイン: デスクトップファイル操作・外部アプリ起動
     .plugin(tauri_plugin_opener::init())
-    
     // ファイルシステムプラグイン: ファイル・フォルダの読み書き操作
     .plugin(tauri_plugin_fs::init())
-    
     // ========================================================================================
     // コマンドハンドラー登録
     // ========================================================================================
     // JavaScript側から呼び出し可能なRust関数を登録
     .invoke_handler(tauri::generate_handler![greet])
-    
     // ========================================================================================
     // アプリケーション初期化処理
     // ========================================================================================
@@ -138,7 +131,7 @@ pub fn run() {
         Err(e) => {
           error!("ウィンドウ設定の読み込みに失敗しました: {}", e);
           return Ok(());
-        }
+        },
       };
 
       // ウィンドウの状態（位置、サイズ、テーマなど）
@@ -147,14 +140,13 @@ pub fn run() {
         Err(e) => {
           error!("ウィンドウ状態の読み込みに失敗しました: {}", e);
           return Ok(());
-        }
+        },
       };
 
       // ----------------------------------------------------------------------------------------
       // メインウィンドウの設定適用
       // ----------------------------------------------------------------------------------------
       if let Some(main_window) = app.get_webview_window("main") {
-        
         // ウィンドウタイトル設定
         if let Err(e) = main_window.set_title(&window_config.title) {
           error!("タイトルの設定に失敗しました: {}", e);
@@ -184,10 +176,7 @@ pub fn run() {
         }
 
         // ウィンドウ位置設定（前回終了時の位置を復元）
-        if let Err(e) = main_window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
-          x: window_state.x,
-          y: window_state.y,
-        })) {
+        if let Err(e) = main_window.set_position(tauri::Position::Physical(tauri::PhysicalPosition { x: window_state.x, y: window_state.y })) {
           error!("ウィンドウ位置の設定に失敗しました: {}", e);
         }
 
@@ -224,7 +213,6 @@ pub fn run() {
       info!("ウィンドウ設定を適用しました");
       Ok(()) // セットアップ成功
     })
-    
     // ========================================================================================
     // アプリケーション実行開始
     // ========================================================================================

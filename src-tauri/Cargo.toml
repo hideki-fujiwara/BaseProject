@@ -30,3 +30,6 @@ tauri-plugin-fs = "2"
 dirs-2 = "3.0"
 dark-light = "2.0.0"
 tauri-plugin-store = "2"
+
+[target.'cfg(any(target_os = "macos", windows, target_os = "linux"))'.dependencies]
+tauri-plugin-global-shortcut = "2.3.0"
